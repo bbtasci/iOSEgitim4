@@ -26,39 +26,11 @@ class ViewController: UIViewController, SecondViewControllerDelegate {
     //Text Fields
     @IBOutlet weak var addMoneyTF: UITextField!
     
-    //Initial budget is 1.000.000
-    var budget: Int = 1000000
-
-    let baris = Assistant()
-    let berkin = Assistant()
-    let ahmet = Director()
-    let kaan = Director()
-
-    let myCompany = CompanyP()
+    let company1 = CompanyBuilder()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // Add employee Baris
-        baris.age = 20
-        baris.name = "Barış"
-          
-        // Add employee Berkin
-        berkin.age = 25
-        berkin.name = "Berkin"
-
-        // Add employee Ahmet
-        ahmet.age = 30
-        ahmet.name = "Ahmet"
-        
-        // Add employee Kaan
-        kaan.age = 35
-        kaan.name = "Kaan"
-          
-        myCompany.addNewEmployee(newEmployee: baris)
-        myCompany.addNewEmployee(newEmployee: berkin)
-        myCompany.addNewEmployee(newEmployee: ahmet)
-        myCompany.addNewEmployee(newEmployee: kaan)
         
         //WIEV CHANGES
         
@@ -71,7 +43,7 @@ class ViewController: UIViewController, SecondViewControllerDelegate {
         numberOfWorkerLabel.clipsToBounds = true
         numberOfWorkerLabel.layer.cornerRadius = 10
         numberOfWorkerLabel.layer.maskedCorners = .layerMinXMaxYCorner
-        numberOfWorkerLabel.text = "# of employees: " + String(myCompany.countWorkers())
+        numberOfWorkerLabel.text = "# of employees: " + String(company1.getCompanyNew().countWorkers())
         
         // companyBudgetLabel view change, only right-bottom corner radius
         companyBudgetLabel.clipsToBounds = true
@@ -112,12 +84,14 @@ class ViewController: UIViewController, SecondViewControllerDelegate {
         let secondViewController = storyboard.instantiateViewController(identifier: "SecondViewController") as! SecondViewController
         secondViewController.delegate = self
         self.navigationController?.pushViewController(secondViewController, animated: true)
+        
+        //Kodsuz için
+        //performSegue(withIdentifier: addNewEmpPageButton, sender: Any?)
     }
     
     @IBAction func paySalaryButtonTouched(_ sender: Any) {
         //budget -= totalSalary
-        budget -= myCompany.getTotalSalary()
-        companyBudgetLabel.text = "budget: $" + String(budget)
+        company1.getCompanyNew().paySalaries()
         salaryPayInfoLabel.text = "Salaries are paid!"
     }
     
@@ -125,8 +99,8 @@ class ViewController: UIViewController, SecondViewControllerDelegate {
         addingInfoLabel.text = "Income added: " + "$" + (addMoneyTF.text ?? "")
         
         if let income = Int(addMoneyTF.text ?? "0") {
-            budget += income
-            companyBudgetLabel.text = "budget: $" + String(budget)
+            company1.getCompanyNew().increaseBudget(income: income)
+            companyBudgetLabel.text = "budget : $" + String(company1.getCompanyNew().getBudget())
         }
     }
     
@@ -134,8 +108,8 @@ class ViewController: UIViewController, SecondViewControllerDelegate {
         addingInfoLabel.text = "Outcome added: " + "$" + (addMoneyTF.text ?? "")
         
         if let outcome = Int(addMoneyTF.text ?? "0") {
-            budget -= outcome
-            companyBudgetLabel.text = "budget: $" + String(budget)
+            company1.getCompanyNew().decreaseBudget(outcome: outcome)
+            companyBudgetLabel.text = "budget: $" + String(company1.getCompanyNew().getBudget())
         }
     }
     
@@ -143,7 +117,7 @@ class ViewController: UIViewController, SecondViewControllerDelegate {
     }
     
     func sendNewEmployee(newEmployee: EmployeeP) {
-        myCompany.addNewEmployee(newEmployee: newEmployee)
-        numberOfWorkerLabel.text = "# of employees: " + String(myCompany.countWorkers())
+        company1.getCompanyNew().addNewEmployee(newEmployee: newEmployee)
+        numberOfWorkerLabel.text = "# of employees: " + String(company1.getCompanyNew().countWorkers())
     }
 }

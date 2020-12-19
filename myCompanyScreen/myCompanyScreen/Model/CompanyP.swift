@@ -10,6 +10,7 @@ import Foundation
 class CompanyP {
     private var workers: [EmployeeP] = []
     private var totalSalary: Int = 0
+    private var budget: Int = 1000000
     
     func getTotalSalary() -> Int {
         return totalSalary
@@ -28,5 +29,20 @@ class CompanyP {
         for employee in newEmployee {
             addNewEmployee(newEmployee: employee)
         }
+    }
+    func getBudget() -> Int {
+        return budget
+    }
+    
+    func increaseBudget(income : Int) {
+         budget += income
+    }
+    
+    func decreaseBudget(outcome : Int) {
+         budget -= outcome
+    }
+    
+    func paySalaries() {
+        decreaseBudget(outcome: getTotalSalary())
     }
 }
