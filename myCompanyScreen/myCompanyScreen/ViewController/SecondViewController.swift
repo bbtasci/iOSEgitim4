@@ -112,7 +112,6 @@ class SecondViewController: UIViewController {
                 alertJobPosition.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
                 self.present(alertJobPosition, animated: true)
                 
-                return
             }
         }
         
